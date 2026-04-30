@@ -1,44 +1,12 @@
-use std::collections::VecDeque;
-use std::thread;
 
 mod lib_;
-use lib_::generates_bytes_of_random_numbers;
-use lib_::udp_sockets;
 
+use lib_::random_color::random_color;
+use lib_::byte_rgb::ByteRGB;
 
 fn main() {
-    let mut red: Option<u8> = None;
-    let mut green: Option<u8>= None;
-    let mut blue: Option<u8>= None;
-
-    thread::spawn(||{
-        udp_sockets::create_sender_udp_port(generates_bytes_of_random_numbers::gen_array());
-    });
-
-    let mut received_byte = VecDeque::from(udp_sockets::create_listen_udp_port_3615());
-    while !received_byte.is_empty(){
-        while red.is_none() || green.is_none() ||  blue.is_none(){
-            if let Some(byte) = received_byte.pop_front(){
-                if red.is_none(){
-                    red = Some(byte);
-                } else if green.is_none(){
-                    green = Some(byte);
-                } else if blue.is_none(){
-                    blue = Some(byte);
-                }
-            } else{
-                if red.is_none(){
-                    red = Some(0);
-                } else if green.is_none(){
-                    green = Some(0);
-                } else if blue.is_none(){
-                    blue = Some(0);
-                }
-                break;
-            }
-        }
-        print!("\x1b[38;2;{};{};{}m■\x1b[0m", red.unwrap(), green.unwrap(), blue.unwrap());
-        (red,green,blue)  = (None,None,None)
-    }
+    const RED: ByteRGB = ByteRGB::new(255,0,0);
+    const BLUE: ByteRGB = ByteRGB::new(0,0,255);
 
 }
+
