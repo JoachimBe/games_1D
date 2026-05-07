@@ -1,3 +1,4 @@
+#[derive(Clone)]
 pub struct ByteRGB{
     red: u8,
     green: u8,
