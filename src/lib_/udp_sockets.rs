@@ -5,13 +5,16 @@ pub fn create_sender_udp_port(vec_of_bytes: Vec<u8>){
         sender_socket.send_to(&vec_of_bytes, "127.0.0.1:3615").expect("couldn't send to address");
 }
 
-pub fn create_listen_udp_port_3615()-> [u8;300]{
-
-        let socket = UdpSocket::bind("127.0.0.1:3615").expect("failed to create socket, couldn't bind to address");
+pub fn create_listen_udp_port_3615(socket: &UdpSocket)-> [u8;300]{
+        
         let mut listen_buffer:[u8;300]= [0;300]; //buffer of 300 bytes maximum
-
+        
         socket.recv_from(&mut listen_buffer).expect("couldn't write on the buffer");
         
         listen_buffer
 }
 
+pub fn create_socket()-> UdpSocket{
+let socket = UdpSocket::bind("127.0.0.1:3615").expect("failed to create socket, couldn't bind to address");
+socket
+}
