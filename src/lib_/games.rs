@@ -51,7 +51,9 @@ pub fn flappy_bird(){
                 }else{
                     player_mouvement = -1
                 }
-            }
+            }else{
+                    player_mouvement = -1
+                }
             player_1.set_player_position(player_1.get_player_position() +player_mouvement );
             if player_1.get_player_position() <= 15 || player_1.get_player_position()>= 83 {
                 break
