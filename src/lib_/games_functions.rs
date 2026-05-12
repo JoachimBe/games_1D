@@ -4,7 +4,7 @@ use std::io::Write;
 use super::byte_rgb::ByteRGB;
 use super::player::Player;
 
-
+//create RGB
 pub fn create_rgb(mut received_byte: VecDeque<u8>){
     while !received_byte.is_empty(){
         let color: ByteRGB = ByteRGB::new(received_byte.pop_front().unwrap(), received_byte.pop_front().unwrap(),received_byte.pop_front().unwrap());
@@ -12,12 +12,12 @@ pub fn create_rgb(mut received_byte: VecDeque<u8>){
     }
 }
 
-pub fn calculate_buffer(player_position: u8)-> (u8,u8,u8,u8){
-    let left_tube:u8 =15;
-    let empty_space_left:u8;
-    let player:u8= 3;
-    let empty_space_right: u8;
-    let right_tube:u8= 15;
+pub fn calculate_buffer(player_position: i16)-> (i16,i16,i16,i16){
+    let left_tube:i16 =15;
+    let empty_space_left:i16;
+    let player:i16= 3;
+    let empty_space_right: i16;
+    let right_tube:i16= 15;
 
     empty_space_left = (player_position -1) -left_tube;
     empty_space_right= (((100 - right_tube) - player)-empty_space_left) -left_tube;
@@ -25,7 +25,16 @@ pub fn calculate_buffer(player_position: u8)-> (u8,u8,u8,u8){
 
 
 }
-pub fn create_buffer_to_send(tube: ByteRGB, player: Player, empty: ByteRGB, calcultated_bufffer: (u8,u8,u8,u8))-> Vec<u8>{
+pub fn convert_byte_rgb_in_u8(colors: Vec<ByteRGB>)-> Vec<u8>{
+    let mut tampon: Vec<u8>= Vec::new();
+    for color in colors{
+        for value in color.get_rgb_values(){
+            tampon.push(value);
+        }
+    }
+    tampon
+}
+pub fn create_buffer_to_send(tube: ByteRGB, player: Player, empty: ByteRGB, calcultated_bufffer: (i16,i16,i16,i16))-> Vec<u8>{
     let (left_tube,left_empty_space, right_empty_space,right_tube) = calcultated_bufffer;
     //creation du tampon à envoyer
     let mut tampon: Vec<u8> = Vec::new();
@@ -62,7 +71,7 @@ pub fn create_buffer_to_send(tube: ByteRGB, player: Player, empty: ByteRGB, calc
     tampon
 
 }
-pub fn erase_line(){
+pub fn erase_line(){  
     //clear the console and hide cursor
     print!("\x1bc\x1b[?25l"); 
 

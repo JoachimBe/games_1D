@@ -1,4 +1,4 @@
-#[derive(Clone)]
+#[derive(Clone,Copy)]
 pub struct ByteRGB{
     red: u8,
     green: u8,
